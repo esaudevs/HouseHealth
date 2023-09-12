@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">House Health</string>
+    <string name="open_add_house_bottom_sheet_content_desc">Button for open house addition modal</string>
+    <string name="open_add_expense_bottom_sheet_content_desc">Button for open house expense addition modal</string>
+    <string name="go_forward_house_selection_content_desc">Go forward icon, see house details</string>
+    <string name="add_house_button">Add house</string>
+    <string name="add_house_title">Add house</string>
+    <string name="house_label">Where is your house?</string>
+    <string name="house_in">House in</string>
+    <string name="previous_month_content_desc">Previous month icon</string>
+    <string name="next_month_content_desc">Next month icon</string>
+    <string name="all">All</string>
+    <string name="services_filter">Services</string>
+    <string name="service_type_label">Service type</string>
+    <string name="empty_expenses">It seems that you still have no payments saved for this month</string>
+    <string name="light">Light</string>
+    <string name="gas">Gas</string>
+    <string name="water">Water</string>
+    <string name="other">Other</string>
+    <string name="currency">USD</string>
+    <string name="add_expense_button">Add expense</string>
+    <string name="add_expense_title">Add expense</string>
+    <string name="concept_label">Concept</string>
+    <string name="comment_label">Comments</string>
+    <string name="amount_label">Amount</string>
+    <string name="loading">Loading</string>
+    <string name="your_houses">Your houses</string>
+    <string name="empty_page_icon_content_desc">Empty page icon</string>
+    <string name="houses__empty_houses">Add houses to start to manage your expenses</string>
+    <string name="houses__error_empty_name">We really need your house name to continue</string>
+</resources>
