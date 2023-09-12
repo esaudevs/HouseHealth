@@ -4,8 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.compose.material3.Text
-import androidx.compose.material3.Text
 import com.esaudev.househealth.ui.screens.expenses.navigation.expensesScreen
 import com.esaudev.househealth.ui.screens.expenses.navigation.navigateToExpenses
 import com.esaudev.househealth.ui.screens.houses.navigation.housesRoute
