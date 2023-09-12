@@ -54,7 +54,7 @@ android {
 
 tasks.register("installGitHook", Copy::class) {
     from(File(rootProject.rootDir, "scripts/pre-commit"))
-    into { File(rootProject.rootDir, "git/hooks") }
+    into { File(rootProject.rootDir, ".git/hooks") }
     fileMode = 777
 }
 
