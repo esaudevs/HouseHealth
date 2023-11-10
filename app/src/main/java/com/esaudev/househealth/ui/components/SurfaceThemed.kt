@@ -1,6 +1,6 @@
 package com.esaudev.househealth.ui.components
 
-import androidx.compose.material3.Surface
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import com.esaudev.househealth.ui.theme.HouseHealthTheme
 

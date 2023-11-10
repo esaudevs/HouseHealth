@@ -10,17 +10,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.esaudev.househealth.R
@@ -43,14 +41,10 @@ fun ExpenseCard(
         ) {
             Text(
                 text = amount.formatToMoney(),
-                style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Medium)
+                style = MaterialTheme.typography.h2
             )
             Spacer(modifier = Modifier.height(16.dp))
             Card(
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer
-                ),
                 shape = RoundedCornerShape(24.dp)
             ) {
                 Row(
@@ -72,12 +66,12 @@ fun ExpenseCard(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = serviceType.getContent().name.asString(),
-                            style = MaterialTheme.typography.bodyMedium
+                            style = MaterialTheme.typography.body1
                         )
                     }
                     Text(
                         text = stringResource(id = R.string.currency),
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.body1
                     )
                 }
             }

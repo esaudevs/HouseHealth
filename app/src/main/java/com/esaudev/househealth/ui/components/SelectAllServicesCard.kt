@@ -6,11 +6,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,7 +20,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.esaudev.househealth.R
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SelectAllServicesCard(
     isSelected: Boolean = false,
@@ -29,11 +28,11 @@ fun SelectAllServicesCard(
     enabled: Boolean = true
 ) {
     val containerAnimatedColor = animateColorAsState(
-        targetValue = if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.secondaryContainer,
+        targetValue = if (isSelected) MaterialTheme.colors.primary else MaterialTheme.colors.secondary,
         label = "containerColor"
     )
     val contentAnimatedColor = animateColorAsState(
-        targetValue = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSecondaryContainer,
+        targetValue = if (isSelected) MaterialTheme.colors.onPrimary else MaterialTheme.colors.onSecondary,
         label = "contentColor"
     )
     Card(
@@ -44,11 +43,7 @@ fun SelectAllServicesCard(
             ),
         onClick = onClick,
         enabled = enabled,
-        shape = RoundedCornerShape(40),
-        colors = CardDefaults.cardColors(
-            containerColor = containerAnimatedColor.value,
-            contentColor = contentAnimatedColor.value
-        )
+        shape = RoundedCornerShape(40)
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -57,7 +52,7 @@ fun SelectAllServicesCard(
         ) {
             Text(
                 text = stringResource(id = R.string.all),
-                style = MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.body1
             )
         }
     }

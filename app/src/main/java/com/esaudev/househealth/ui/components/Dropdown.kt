@@ -5,14 +5,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ExposedDropdownMenuBox
+import androidx.compose.material.ExposedDropdownMenuDefaults
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,7 +43,7 @@ fun <T> T.toExposedDropdownOption(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun <T> ExposedDropdownMenu(
     options: List<ExposedDropdownOption<T>>,
@@ -71,15 +71,14 @@ fun <T> ExposedDropdownMenu(
                 label = {
                     Text(
                         text = stringResource(id = R.string.service_type_label),
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.body1
                     )
                 },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                 modifier = Modifier
-                    .menuAnchor()
                     .fillMaxWidth(),
                 shape = RoundedCornerShape(50),
-                textStyle = MaterialTheme.typography.bodyMedium,
+                textStyle = MaterialTheme.typography.body1,
                 singleLine = true
             )
 
@@ -91,10 +90,10 @@ fun <T> ExposedDropdownMenu(
                 options.forEach { item ->
                     DropdownMenuItem(
                         modifier = Modifier.fillMaxWidth(),
-                        text = {
+                        content = {
                             Text(
                                 text = item.labelToShow,
-                                style = MaterialTheme.typography.bodyMedium
+                                style = MaterialTheme.typography.body1
                             )
                         },
                         onClick = {

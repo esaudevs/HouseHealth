@@ -1,13 +1,15 @@
 package com.esaudev.househealth.ui.components
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,13 +24,15 @@ fun ProgressButton(
     onClick: () -> Unit
 ) {
     Box(
-        modifier = modifier,
+        modifier = modifier
+            .background(MaterialTheme.colors.background),
         contentAlignment = Alignment.Center
     ) {
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = onClick,
-            enabled = !isLoading
+            enabled = !isLoading,
+            shape = RoundedCornerShape(50)
         ) {
             if (isLoading) {
                 CircularProgressIndicator()
@@ -36,7 +40,7 @@ fun ProgressButton(
                 Text(
                     modifier = Modifier.padding(8.dp),
                     text = text,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.body1
                 )
             }
         }

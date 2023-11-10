@@ -1,42 +1,6 @@
 package com.esaudev.househealth.ui.sheets.expenses
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.SheetState
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.esaudev.househealth.R
-import com.esaudev.househealth.domain.model.Expense
-import com.esaudev.househealth.domain.model.ServiceType
-import com.esaudev.househealth.domain.model.getContent
-import com.esaudev.househealth.ui.components.ExposedDropdownMenu
-import com.esaudev.househealth.ui.components.ProgressButton
-import com.esaudev.househealth.ui.components.SurfaceThemed
-import com.esaudev.househealth.ui.components.toExposedDropdownOption
-import com.esaudev.househealth.ui.util.UiTopLevelEvent
-
+/*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddExpenseModalBottomSheet(
@@ -197,4 +161,4 @@ private fun SheetContentPreview() {
             onAddExpense = {}
         )
     }
-}
+}*/

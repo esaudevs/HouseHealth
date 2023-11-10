@@ -15,8 +15,8 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -70,8 +70,8 @@ fun LoadingWheel(
     )
 
     // Specifies the color animation for the base-to-progress line color change
-    val baseLineColor = MaterialTheme.colorScheme.onBackground
-    val progressLineColor = MaterialTheme.colorScheme.inversePrimary
+    val baseLineColor = MaterialTheme.colors.onBackground
+    val progressLineColor = MaterialTheme.colors.onPrimary
     val colorAnimValues = (0 until NUM_OF_LINES).map { index ->
         infiniteTransition.animateColor(
             initialValue = baseLineColor,
@@ -121,8 +121,7 @@ fun OverlayLoadingWheel(
 ) {
     Surface(
         shape = RoundedCornerShape(60.dp),
-        shadowElevation = 8.dp,
-        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.83f),
+        color = MaterialTheme.colors.surface.copy(alpha = 0.83f),
         modifier = modifier
             .size(60.dp)
     ) {

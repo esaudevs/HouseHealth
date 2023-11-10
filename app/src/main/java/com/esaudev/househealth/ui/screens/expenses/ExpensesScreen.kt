@@ -8,19 +8,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -31,7 +27,6 @@ import com.esaudev.househealth.domain.model.getContent
 import com.esaudev.househealth.ui.components.MonthSelector
 import com.esaudev.househealth.ui.components.SelectAllServicesCard
 import com.esaudev.househealth.ui.components.ServiceCard
-import com.esaudev.househealth.ui.sheets.expenses.AddExpenseModalBottomSheet
 import java.time.LocalDateTime
 
 @Composable
@@ -41,20 +36,14 @@ fun ExpensesRoute(
     ExpensesContent(onExpenseClick = onExpenseClick)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExpensesContent(
     onExpenseClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val sheetState = rememberModalBottomSheetState()
-    var isSheetOpen by rememberSaveable {
-        mutableStateOf(false)
-    }
-
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = { isSheetOpen = true }) {
+            FloatingActionButton(onClick = { }) {
                 Icon(
                     imageVector = Icons.Rounded.Add,
                     contentDescription = stringResource(
@@ -81,7 +70,7 @@ fun ExpensesContent(
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = stringResource(id = R.string.services_filter),
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.h1
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Row(
@@ -99,16 +88,5 @@ fun ExpensesContent(
                 }
             }
         }
-
-        AddExpenseModalBottomSheet(
-            sheetState = sheetState,
-            isSheetOpen = isSheetOpen,
-            onDismissRequest = {
-                isSheetOpen = false
-            },
-            onSuccess = {
-                isSheetOpen = false
-            }
-        )
     }
 }
