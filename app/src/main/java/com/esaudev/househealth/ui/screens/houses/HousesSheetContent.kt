@@ -27,8 +27,9 @@ fun HousesSheetContent(
     value: String,
     hasError: Boolean,
     onValueChange: (String) -> Unit,
-    onAddHouseClick: (House) -> Unit
+    onAddHouseClick: (House) -> Unit,
 ) {
+
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
 
@@ -43,9 +44,9 @@ fun HousesSheetContent(
             .padding(
                 bottom = 8.dp
             ),
-        valueProvider = { value },
-        isErrorProvider = { hasError },
-        errorMessageProvider = { stringResource(id = R.string.houses__error_empty_name) },
+        value = value,
+        isError = hasError,
+        errorMessage = stringResource(id = R.string.houses__error_empty_name),
         onValueChange = onValueChange,
         label = stringResource(id = R.string.house_label),
         keyboardActions = KeyboardActions(

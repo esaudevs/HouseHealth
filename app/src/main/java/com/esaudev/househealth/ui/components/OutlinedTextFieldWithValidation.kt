@@ -1,7 +1,7 @@
 package com.esaudev.househealth.ui.components
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.AnimatedVisibility
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,9 +28,9 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun OutlinedTextFieldWithValidation(
     modifier: Modifier = Modifier,
-    valueProvider: () -> String,
-    isErrorProvider: () -> Boolean,
-    errorMessageProvider: @Composable () -> String,
+    value: String,
+    isError: Boolean,
+    errorMessage: String,
     onValueChange: (String) -> Unit,
     label: String,
     singleLine: Boolean = true,
@@ -50,7 +50,7 @@ fun OutlinedTextFieldWithValidation(
     ) {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = valueProvider(),
+            value = value,
             onValueChange = onValueChange,
             label = {
                 Text(
@@ -63,22 +63,22 @@ fun OutlinedTextFieldWithValidation(
             shape = shape,
             textStyle = textStyle,
             singleLine = singleLine,
-            isError = isErrorProvider(),
+            isError = isError,
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions,
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 cursorColor = MaterialTheme.colors.onBackground,
                 focusedBorderColor = MaterialTheme.colors.onBackground,
-                focusedLabelColor = MaterialTheme.colors.onBackground
+                focusedLabelColor = MaterialTheme.colors.onBackground,
             )
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        AnimatedVisibility(visible = isErrorProvider()) {
+        AnimatedVisibility(visible = isError) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = errorMessageProvider(),
+                text = errorMessage,
                 color = MaterialTheme.colors.error
             )
         }
@@ -92,9 +92,9 @@ fun OutlinedTextFieldWithValidationPreview() {
     SurfaceThemed {
         Surface {
             OutlinedTextFieldWithValidation(
-                valueProvider = { "Value" },
-                isErrorProvider = { false },
-                errorMessageProvider = { "Error message" },
+                value = "Value",
+                isError = false,
+                errorMessage = "Error message",
                 onValueChange = {},
                 label = "Label",
                 keyboardActions = KeyboardActions { }
@@ -110,9 +110,9 @@ fun OutlinedTextFieldWithValidationWithErrorPreview() {
     SurfaceThemed {
         Surface {
             OutlinedTextFieldWithValidation(
-                valueProvider = { "Value" },
-                isErrorProvider = { false },
-                errorMessageProvider = { "Error message" },
+                value = "Value",
+                isError = true,
+                errorMessage = "Error message",
                 onValueChange = {},
                 label = "Label",
                 keyboardActions = KeyboardActions { }
