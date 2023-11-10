@@ -27,9 +27,8 @@ fun HousesSheetContent(
     value: String,
     hasError: Boolean,
     onValueChange: (String) -> Unit,
-    onAddHouseClick: (House) -> Unit,
+    onAddHouseClick: (House) -> Unit
 ) {
-
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
 

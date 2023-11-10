@@ -1,7 +1,7 @@
 package com.esaudev.househealth.ui.components
 
-import androidx.compose.animation.AnimatedVisibility
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -69,7 +69,7 @@ fun OutlinedTextFieldWithValidation(
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 cursorColor = MaterialTheme.colors.onBackground,
                 focusedBorderColor = MaterialTheme.colors.onBackground,
-                focusedLabelColor = MaterialTheme.colors.onBackground,
+                focusedLabelColor = MaterialTheme.colors.onBackground
             )
         )
 
