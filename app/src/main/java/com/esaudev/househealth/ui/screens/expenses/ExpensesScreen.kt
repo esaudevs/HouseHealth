@@ -41,8 +41,8 @@ import com.esaudev.househealth.ui.sheets.expenses.AddExpenseModalViewModel
 import com.esaudev.househealth.ui.sheets.expenses.AddExpenseUiEvent
 import com.esaudev.househealth.ui.theme.SolidWhite
 import com.esaudev.househealth.ui.util.UiTopLevelEvent
-import kotlinx.coroutines.launch
 import java.time.LocalDateTime
+import kotlinx.coroutines.launch
 
 @Composable
 fun ExpensesRoute(
@@ -108,7 +108,6 @@ fun ExpensesScreen(
                         bottomViewModel.onEvent(AddExpenseUiEvent.ServiceTypeChanged(it))
                     },
                     onAddExpenseClick = {
-
                     }
                 )
             }
@@ -119,7 +118,6 @@ fun ExpensesScreen(
         content = {
             ExpensesContent(
                 onExpenseClick = {
-
                 },
                 onAddExpenseClick = {
                     scope.launch {
