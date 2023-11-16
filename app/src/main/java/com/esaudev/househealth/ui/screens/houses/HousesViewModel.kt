@@ -18,8 +18,7 @@ class HousesViewModel @Inject constructor(
     val uiState: StateFlow<HousesUiState> = housesRepository.observeAll()
         .map {
             if (it.isEmpty()) HousesUiState.Empty else HousesUiState.HousesWithHouses(houses = it)
-        }
-        .stateIn(
+        }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = HousesUiState.Loading

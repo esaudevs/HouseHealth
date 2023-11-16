@@ -1,5 +1,7 @@
 package com.esaudev.househealth.di
 
+import com.esaudev.househealth.domain.repository.ExpensesRepository
+import com.esaudev.househealth.domain.repository.ExpensesRepositoryImpl
 import com.esaudev.househealth.domain.repository.HousesRepository
 import com.esaudev.househealth.domain.repository.HousesRepositoryImpl
 import dagger.Binds
@@ -15,4 +17,9 @@ abstract class RepositoryModule {
     abstract fun bindsHouseRepository(
         housesRepositoryImpl: HousesRepositoryImpl
     ): HousesRepository
+
+    @Binds
+    abstract fun bindsExpensesRepository(
+        expensesRepositoryImpl: ExpensesRepositoryImpl
+    ): ExpensesRepository
 }

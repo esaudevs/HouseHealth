@@ -2,12 +2,18 @@ package com.esaudev.househealth.ui.screens.expenses
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
@@ -23,6 +29,7 @@ import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -31,9 +38,13 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.esaudev.househealth.R
 import com.esaudev.househealth.domain.model.ServiceType
 import com.esaudev.househealth.domain.model.getContent
+import com.esaudev.househealth.ui.components.EmptyPage
+import com.esaudev.househealth.ui.components.ExpenseCard
+import com.esaudev.househealth.ui.components.LoadingPage
 import com.esaudev.househealth.ui.components.MonthSelector
 import com.esaudev.househealth.ui.components.SelectAllServicesCard
 import com.esaudev.househealth.ui.components.ServiceCard
@@ -46,18 +57,34 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ExpensesRoute(
+    viewModel: ExpensesViewModel = hiltViewModel(),
+    bottomViewModel: AddExpenseModalViewModel = hiltViewModel(),
     onExpenseClick: () -> Unit,
-    bottomViewModel: AddExpenseModalViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val queryState by viewModel.queryState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.getExpensesByQuery()
+    }
+
     ExpensesScreen(
-        bottomViewModel = bottomViewModel
+        uiState = uiState,
+        queryState = queryState,
+        bottomViewModel = bottomViewModel,
+        onNextMonthClick = viewModel::onNextMonth,
+        onPreviousMonthClick = viewModel::onPreviousMonth
     )
 }
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun ExpensesScreen(
-    bottomViewModel: AddExpenseModalViewModel
+    uiState: ExpensesUiState,
+    queryState: ExpensesQueryState,
+    bottomViewModel: AddExpenseModalViewModel,
+    onNextMonthClick: () -> Unit,
+    onPreviousMonthClick: () -> Unit,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
@@ -108,6 +135,7 @@ fun ExpensesScreen(
                         bottomViewModel.onEvent(AddExpenseUiEvent.ServiceTypeChanged(it))
                     },
                     onAddExpenseClick = {
+                        bottomViewModel.onEvent(AddExpenseUiEvent.AddExpenseClick)
                     }
                 )
             }
@@ -116,24 +144,55 @@ fun ExpensesScreen(
         sheetBackgroundColor = SolidWhite,
         sheetState = modalSheetState,
         content = {
-            ExpensesContent(
-                onExpenseClick = {
-                },
-                onAddExpenseClick = {
-                    scope.launch {
-                        modalSheetState.show()
-                    }
+            when(uiState) {
+                is ExpensesUiState.Empty -> {
+                    ExpensesEmpty(
+                        onAddExpenseClick = {
+                            bottomViewModel.initializeExpense()
+                            scope.launch {
+                                modalSheetState.show()
+                            }
+                        }
+                    )
                 }
-            )
+
+                is ExpensesUiState.HouseWithExpenses -> {
+                    ExpensesContent(
+                        uiState = uiState,
+                        queryState = queryState,
+                        onExpenseClick = {
+
+                        },
+                        onAddExpenseClick = {
+                            bottomViewModel.initializeExpense()
+                            scope.launch {
+                                modalSheetState.show()
+                            }
+                        },
+                        onNextMonthClick = onNextMonthClick,
+                        onPreviousMonthClick = onPreviousMonthClick
+                    )
+                }
+
+                is ExpensesUiState.Loading -> {
+                    LoadingPage(
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            }
         }
     )
 }
 
 @Composable
 fun ExpensesContent(
-    onExpenseClick: () -> Unit,
+    uiState: ExpensesUiState.HouseWithExpenses,
+    queryState: ExpensesQueryState,
     modifier: Modifier = Modifier,
-    onAddExpenseClick: () -> Unit
+    onNextMonthClick: () -> Unit,
+    onPreviousMonthClick: () -> Unit,
+    onAddExpenseClick: () -> Unit,
+    onExpenseClick: () -> Unit
 ) {
     Scaffold(
         floatingActionButton = {
@@ -153,17 +212,17 @@ fun ExpensesContent(
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
-                .padding(paddingValues = paddingValues)
+                .padding(paddingValues = paddingValues),
+            contentPadding = PaddingValues(all = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
-                Column(
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                ) {
+                Column {
                     MonthSelector(
                         modifier = Modifier.fillMaxWidth(),
-                        date = LocalDateTime.now(),
-                        onPreviousMonthClick = {},
-                        onNextMonthClick = {}
+                        date = queryState.date,
+                        onPreviousMonthClick = onPreviousMonthClick,
+                        onNextMonthClick = onNextMonthClick
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
@@ -185,6 +244,44 @@ fun ExpensesContent(
                     }
                 }
             }
+
+            items(uiState.expenses, key = { it.id }) {
+                ExpenseCard(amount = it.amount, serviceType = it.serviceType)
+            }
+
+            item {
+                Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
+            }
         }
+    }
+}
+
+@Composable
+fun ExpensesEmpty(
+    onAddExpenseClick: () -> Unit
+) {
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = onAddExpenseClick,
+                backgroundColor = MaterialTheme.colors.primary,
+                contentColor = MaterialTheme.colors.onPrimary
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Add,
+                    contentDescription = stringResource(
+                        id = R.string.open_add_house_bottom_sheet_content_desc
+                    )
+                )
+            }
+        }
+    ) { paddingValues ->
+        EmptyPage(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
+            iconRes = R.drawable.ic_money_bill_solid,
+            message = stringResource(id = R.string.houses__empty_expenses)
+        )
     }
 }

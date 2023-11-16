@@ -36,7 +36,7 @@ fun ExpensesSheetContent(
     onAmountChange: (String) -> Unit,
     onCommentChange: (String) -> Unit,
     onServiceTypeChange: (ServiceType) -> Unit,
-    onAddExpenseClick: (Expense) -> Unit
+    onAddExpenseClick: () -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
@@ -110,7 +110,6 @@ fun ExpensesSheetContent(
     ProgressButton(
         isLoading = false,
         text = stringResource(id = R.string.add_expense_button),
-        onClick = {
-        }
+        onClick = onAddExpenseClick
     )
 }

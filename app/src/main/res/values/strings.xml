@@ -27,5 +27,6 @@
     <string name="your_houses">Your houses</string>
     <string name="empty_page_icon_content_desc">Empty page icon</string>
     <string name="houses__empty_houses">Add houses to start to manage your expenses</string>
+    <string name="houses__empty_expenses">Add expenses to start track them</string>
     <string name="houses__error_empty_name">We really need your house name to continue</string>
 </resources>

@@ -18,6 +18,12 @@ object DaosModule {
 
     @Singleton
     @Provides
+    fun providesExpenseDao(
+        database: HouseHealthDatabase
+    ) = database.expenseDao()
+
+    @Singleton
+    @Provides
     fun providesHouseExpenseDao(
         database: HouseHealthDatabase
     ) = database.houseExpenseDao()
