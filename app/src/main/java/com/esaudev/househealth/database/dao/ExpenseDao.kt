@@ -5,7 +5,6 @@ import androidx.room.Query
 import androidx.room.Upsert
 import com.esaudev.househealth.database.model.ExpenseEntity
 import kotlinx.coroutines.flow.Flow
-import java.time.LocalDateTime
 
 @Dao
 interface ExpenseDao {
@@ -21,5 +20,4 @@ interface ExpenseDao {
 
     @Query("DELETE FROM expenses WHERE id = :expenseId")
     fun deleteById(expenseId: String)
-
 }

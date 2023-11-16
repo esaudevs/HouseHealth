@@ -1,29 +1,21 @@
 package com.esaudev.househealth.ui.screens.expenses
 
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.util.query
 import com.esaudev.househealth.domain.model.Expense
 import com.esaudev.househealth.domain.repository.ExpensesRepository
 import com.esaudev.househealth.ui.screens.expenses.navigation.houseIdArg
-import com.esaudev.househealth.ui.screens.houses.HousesUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.LocalDateTime
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
-import java.time.Month
-import javax.inject.Inject
 
 @HiltViewModel
 class ExpensesViewModel @Inject constructor(
@@ -85,7 +77,7 @@ sealed interface ExpensesUiState {
     data object Loading : ExpensesUiState
 
     data class HouseWithExpenses(
-        val expenses: List<Expense>,
+        val expenses: List<Expense>
     ) : ExpensesUiState
 
     data object Empty : ExpensesUiState

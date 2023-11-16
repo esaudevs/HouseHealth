@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.esaudev.househealth.domain.model.Expense
 import com.esaudev.househealth.domain.model.ServiceType
 import com.esaudev.househealth.domain.repository.ExpensesRepository
 import com.esaudev.househealth.domain.usecase.ValidateExpenseStateUseCase
@@ -33,7 +32,7 @@ class AddExpenseModalViewModel @Inject constructor(
     val uiTopLevelEvent = _uiTopLevelEvent.receiveAsFlow()
 
     fun initializeExpense() {
-        val houseId= savedStateHandle.get<String>(houseIdArg)
+        val houseId = savedStateHandle.get<String>(houseIdArg)
         uiState = uiState.copy(
             houseId = houseId
         )
@@ -50,7 +49,6 @@ class AddExpenseModalViewModel @Inject constructor(
                             _uiTopLevelEvent.send(UiTopLevelEvent.Success)
                         }
                         .onFailure {
-
                         }
                 }
                 is AddExpenseUiEvent.AmountChanged -> {

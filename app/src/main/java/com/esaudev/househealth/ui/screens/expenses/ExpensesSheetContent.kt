@@ -19,7 +19,6 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.esaudev.househealth.R
-import com.esaudev.househealth.domain.model.Expense
 import com.esaudev.househealth.domain.model.ServiceType
 import com.esaudev.househealth.domain.model.getContent
 import com.esaudev.househealth.ui.components.ExposedDropdownMenu

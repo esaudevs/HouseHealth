@@ -52,14 +52,13 @@ import com.esaudev.househealth.ui.sheets.expenses.AddExpenseModalViewModel
 import com.esaudev.househealth.ui.sheets.expenses.AddExpenseUiEvent
 import com.esaudev.househealth.ui.theme.SolidWhite
 import com.esaudev.househealth.ui.util.UiTopLevelEvent
-import java.time.LocalDateTime
 import kotlinx.coroutines.launch
 
 @Composable
 fun ExpensesRoute(
     viewModel: ExpensesViewModel = hiltViewModel(),
     bottomViewModel: AddExpenseModalViewModel = hiltViewModel(),
-    onExpenseClick: () -> Unit,
+    onExpenseClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val queryState by viewModel.queryState.collectAsStateWithLifecycle()
@@ -84,7 +83,7 @@ fun ExpensesScreen(
     queryState: ExpensesQueryState,
     bottomViewModel: AddExpenseModalViewModel,
     onNextMonthClick: () -> Unit,
-    onPreviousMonthClick: () -> Unit,
+    onPreviousMonthClick: () -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
@@ -144,7 +143,7 @@ fun ExpensesScreen(
         sheetBackgroundColor = SolidWhite,
         sheetState = modalSheetState,
         content = {
-            when(uiState) {
+            when (uiState) {
                 is ExpensesUiState.Empty -> {
                     ExpensesEmpty(
                         onAddExpenseClick = {
@@ -161,7 +160,6 @@ fun ExpensesScreen(
                         uiState = uiState,
                         queryState = queryState,
                         onExpenseClick = {
-
                         },
                         onAddExpenseClick = {
                             bottomViewModel.initializeExpense()

@@ -1,8 +1,8 @@
 package com.esaudev.househealth.domain.repository
 
 import com.esaudev.househealth.domain.model.Expense
-import kotlinx.coroutines.flow.Flow
 import java.time.LocalDateTime
+import kotlinx.coroutines.flow.Flow
 
 interface ExpensesRepository {
 
@@ -16,5 +16,4 @@ interface ExpensesRepository {
         houseId: String,
         date: LocalDateTime
     ): Flow<List<Expense>>
-
 }

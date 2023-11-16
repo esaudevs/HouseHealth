@@ -11,7 +11,7 @@ data class Expense(
     val serviceType: ServiceType,
     val comments: String,
     val date: LocalDateTime,
-    val houseId: String,
+    val houseId: String
 )
 
 fun Expense.toEntity() = ExpenseEntity(
