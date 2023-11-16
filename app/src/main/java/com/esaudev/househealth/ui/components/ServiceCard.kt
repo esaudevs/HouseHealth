@@ -59,10 +59,10 @@ fun ServiceCard(
                 painter = painterResource(id = serviceTypeContent.iconRes),
                 contentDescription = serviceTypeContent.iconDesc.asString()
             )
-            Spacer(modifier = Modifier.height(2.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = serviceTypeContent.name.asString(),
-                style = MaterialTheme.typography.body1
+                style = MaterialTheme.typography.body2
             )
         }
     }

@@ -39,7 +39,7 @@ fun MonthSelector(
 
         Text(
             text = date.getMonthNameWithYear(),
-            style = MaterialTheme.typography.h1
+            style = MaterialTheme.typography.h4
         )
 
         IconButton(onClick = onNextMonthClick) {

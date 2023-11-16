@@ -13,6 +13,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -79,7 +80,12 @@ fun <T> ExposedDropdownMenu(
                     .fillMaxWidth(),
                 shape = RoundedCornerShape(50),
                 textStyle = MaterialTheme.typography.body1,
-                singleLine = true
+                singleLine = true,
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    cursorColor = MaterialTheme.colors.onBackground,
+                    focusedBorderColor = MaterialTheme.colors.onBackground,
+                    focusedLabelColor = MaterialTheme.colors.onBackground
+                )
             )
 
             ExposedDropdownMenu(

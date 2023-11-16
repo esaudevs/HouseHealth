@@ -45,7 +45,8 @@ fun ExpenseCard(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Card(
-                shape = RoundedCornerShape(24.dp)
+                shape = RoundedCornerShape(24.dp),
+                elevation = 0.dp
             ) {
                 Row(
                     modifier = Modifier
