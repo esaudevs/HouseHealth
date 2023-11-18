@@ -38,7 +38,7 @@ class ExpensesViewModel @Inject constructor(
                 ).first()
 
                 if (expenses.isEmpty()) {
-                    _uiState.value = ExpensesUiState.Empty
+                    _uiState.value = ExpensesUiState.HouseWithExpenses(expenses = expenses)
                 } else {
                     _uiState.value = ExpensesUiState.HouseWithExpenses(expenses = expenses)
                 }

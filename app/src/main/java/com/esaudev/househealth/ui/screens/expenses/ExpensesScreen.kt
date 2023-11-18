@@ -1,5 +1,6 @@
 package com.esaudev.househealth.ui.screens.expenses
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,6 +34,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -168,22 +170,8 @@ fun ExpensesScreen(
         sheetState = modalSheetState,
         content = {
             when (uiState) {
-                is ExpensesUiState.Empty -> {
-                    ExpensesEmpty(
-                        queryState = queryState,
-                        onAddExpenseClick = {
-                            bottomViewModel.initializeExpense()
-                            scope.launch {
-                                modalSheetState.show()
-                            }
-                        },
-                        onNextMonthClick = onNextMonthClick,
-                        onPreviousMonthClick = onPreviousMonthClick
-                    )
-                }
-
                 is ExpensesUiState.HouseWithExpenses -> {
-                    ExpensesContent(
+                    ExpensesWrapper(
                         uiState = uiState,
                         queryState = queryState,
                         onExpenseClick = {
@@ -204,6 +192,7 @@ fun ExpensesScreen(
                         modifier = Modifier.fillMaxSize()
                     )
                 }
+                else -> Unit
             }
         }
     )
@@ -282,14 +271,17 @@ fun ExpensesContent(
 }
 
 @Composable
-fun ExpensesEmpty(
-    queryState: ExpensesQueryState,
+fun ExpensesWrapper(
     modifier: Modifier = Modifier,
+    uiState: ExpensesUiState.HouseWithExpenses,
+    queryState: ExpensesQueryState,
     onNextMonthClick: () -> Unit,
     onPreviousMonthClick: () -> Unit,
-    onAddExpenseClick: () -> Unit
+    onAddExpenseClick: () -> Unit,
+    onExpenseClick: () -> Unit
 ) {
     Scaffold(
+        modifier = modifier,
         floatingActionButton = {
             FloatingActionButton(
                 onClick = onAddExpenseClick,
@@ -299,46 +291,109 @@ fun ExpensesEmpty(
                 Icon(
                     imageVector = Icons.Rounded.Add,
                     contentDescription = stringResource(
-                        id = R.string.open_add_house_bottom_sheet_content_desc
+                        id = R.string.open_add_expense_bottom_sheet_content_desc
                     )
                 )
             }
         }
     ) { paddingValues ->
+
         Column(
-            modifier = Modifier.padding(all = 16.dp)
+            modifier = Modifier
+                .padding(paddingValues)
+                .padding(all = 16.dp)
         ) {
-            MonthSelector(
-                modifier = Modifier.fillMaxWidth(),
-                date = queryState.date,
+            ExpensesHeader(
+                queryState = queryState,
+                onNextMonthClick = onNextMonthClick,
                 onPreviousMonthClick = onPreviousMonthClick,
-                onNextMonthClick = onNextMonthClick
             )
+
             Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = stringResource(id = R.string.services_filter),
-                style = MaterialTheme.typography.h4
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                ServiceType.values().onEach {
-                    ServiceCard(serviceTypeContent = it.getContent(), onClick = {})
+
+            AnimatedContent(targetState = uiState.expenses, label = "") { targetState ->
+                if (targetState.isEmpty()) {
+                    ExpensesEmptyContent(
+                        paddingValues = paddingValues
+                    )
+                } else {
+                    ExpensesWithContent(
+                        uiState = uiState,
+                        paddingValues = paddingValues
+                    )
                 }
-                SelectAllServicesCard(
-                    onClick = { },
-                    isSelected = false
-                )
             }
-            EmptyPage(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                iconRes = R.drawable.ic_money_bill_solid,
-                message = stringResource(id = R.string.houses__empty_expenses)
+        }
+    }
+}
+
+@Composable
+fun ExpensesHeader(
+    modifier: Modifier = Modifier,
+    queryState: ExpensesQueryState,
+    onNextMonthClick: () -> Unit,
+    onPreviousMonthClick: () -> Unit,
+) {
+    Column(
+        modifier = modifier
+    ) {
+        MonthSelector(
+            modifier = Modifier.fillMaxWidth(),
+            date = queryState.date,
+            onPreviousMonthClick = onPreviousMonthClick,
+            onNextMonthClick = onNextMonthClick
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = stringResource(id = R.string.services_filter),
+            style = MaterialTheme.typography.h4
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            ServiceType.values().onEach {
+                ServiceCard(serviceTypeContent = it.getContent(), onClick = {})
+            }
+            SelectAllServicesCard(
+                onClick = { },
+                isSelected = false
             )
+        }
+    }
+}
+
+@Composable
+fun ExpensesEmptyContent(
+    paddingValues: PaddingValues
+) {
+    EmptyPage(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues),
+        iconRes = R.drawable.ic_money_bill_solid,
+        message = stringResource(id = R.string.houses__empty_expenses)
+    )
+}
+
+@Composable
+fun ExpensesWithContent(
+    uiState: ExpensesUiState.HouseWithExpenses,
+    paddingValues: PaddingValues
+) {
+    LazyColumn(
+        modifier = Modifier
+            .padding(paddingValues = paddingValues),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+
+        items(uiState.expenses, key = { it.id }) {
+            ExpenseCard(amount = it.amount, serviceType = it.serviceType)
+        }
+
+        item {
+            Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
         }
     }
 }
