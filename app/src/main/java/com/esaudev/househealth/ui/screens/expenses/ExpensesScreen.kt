@@ -34,7 +34,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -306,7 +305,7 @@ fun ExpensesWrapper(
             ExpensesHeader(
                 queryState = queryState,
                 onNextMonthClick = onNextMonthClick,
-                onPreviousMonthClick = onPreviousMonthClick,
+                onPreviousMonthClick = onPreviousMonthClick
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -332,7 +331,7 @@ fun ExpensesHeader(
     modifier: Modifier = Modifier,
     queryState: ExpensesQueryState,
     onNextMonthClick: () -> Unit,
-    onPreviousMonthClick: () -> Unit,
+    onPreviousMonthClick: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -387,7 +386,6 @@ fun ExpensesWithContent(
             .padding(paddingValues = paddingValues),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-
         items(uiState.expenses, key = { it.id }) {
             ExpenseCard(amount = it.amount, serviceType = it.serviceType)
         }
