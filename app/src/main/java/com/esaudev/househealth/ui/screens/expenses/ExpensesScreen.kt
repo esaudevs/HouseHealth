@@ -146,12 +146,15 @@ fun ExpensesScreen(
             when (uiState) {
                 is ExpensesUiState.Empty -> {
                     ExpensesEmpty(
+                        queryState = queryState,
                         onAddExpenseClick = {
                             bottomViewModel.initializeExpense()
                             scope.launch {
                                 modalSheetState.show()
                             }
-                        }
+                        },
+                        onNextMonthClick = onNextMonthClick,
+                        onPreviousMonthClick = onPreviousMonthClick
                     )
                 }
 
@@ -256,6 +259,10 @@ fun ExpensesContent(
 
 @Composable
 fun ExpensesEmpty(
+    queryState: ExpensesQueryState,
+    modifier: Modifier = Modifier,
+    onNextMonthClick: () -> Unit,
+    onPreviousMonthClick: () -> Unit,
     onAddExpenseClick: () -> Unit
 ) {
     Scaffold(
@@ -274,12 +281,41 @@ fun ExpensesEmpty(
             }
         }
     ) { paddingValues ->
-        EmptyPage(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
-            iconRes = R.drawable.ic_money_bill_solid,
-            message = stringResource(id = R.string.houses__empty_expenses)
-        )
+        Column(
+            modifier = Modifier.padding(all = 16.dp)
+        ) {
+            MonthSelector(
+                modifier = Modifier.fillMaxWidth(),
+                date = queryState.date,
+                onPreviousMonthClick = onPreviousMonthClick,
+                onNextMonthClick = onNextMonthClick
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = stringResource(id = R.string.services_filter),
+                style = MaterialTheme.typography.h4
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                ServiceType.values().onEach {
+                    ServiceCard(serviceTypeContent = it.getContent(), onClick = {})
+                }
+                SelectAllServicesCard(
+                    onClick = { },
+                    isSelected = false
+                )
+
+            }
+            EmptyPage(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
+                iconRes = R.drawable.ic_money_bill_solid,
+                message = stringResource(id = R.string.houses__empty_expenses)
+            )
+        }
     }
 }
