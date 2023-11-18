@@ -1,5 +1,6 @@
 package com.esaudev.househealth.ui.components
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Icon
@@ -37,10 +38,14 @@ fun MonthSelector(
             )
         }
 
-        Text(
-            text = date.getMonthNameWithYear(),
-            style = MaterialTheme.typography.h4
-        )
+        AnimatedContent(
+            targetState = date, label = ""
+        ) { targetState ->
+            Text(
+                text = targetState.getMonthNameWithYear(),
+                style = MaterialTheme.typography.h4
+            )
+        }
 
         IconButton(onClick = onNextMonthClick) {
             Icon(

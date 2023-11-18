@@ -52,7 +52,14 @@ import com.esaudev.househealth.ui.sheets.expenses.AddExpenseModalViewModel
 import com.esaudev.househealth.ui.sheets.expenses.AddExpenseUiEvent
 import com.esaudev.househealth.ui.theme.SolidWhite
 import com.esaudev.househealth.ui.util.UiTopLevelEvent
+import com.vanpra.composematerialdialogs.MaterialDialog
+import com.vanpra.composematerialdialogs.datetime.date.DatePickerDefaults
+import com.vanpra.composematerialdialogs.datetime.date.datepicker
+import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 
 @Composable
 fun ExpensesRoute(
@@ -88,9 +95,11 @@ fun ExpensesScreen(
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
     val modalSheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden
+        initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = true
     )
     val scope = rememberCoroutineScope()
+    val dateDialogState = rememberMaterialDialogState()
 
     LaunchedEffect(key1 = true) {
         bottomViewModel.uiTopLevelEvent.collect { event ->
@@ -117,24 +126,40 @@ fun ExpensesScreen(
 
     ModalBottomSheetLayout(
         sheetContent = {
-            Column(
-                modifier = Modifier.padding(24.dp)
+            ExpensesSheetContent(
+                amount = bottomViewModel.uiState.amount,
+                comments = bottomViewModel.uiState.comments,
+                serviceType = bottomViewModel.uiState.serviceType,
+                date = bottomViewModel.uiState.date,
+                onAmountChange = {
+                    bottomViewModel.onEvent(AddExpenseUiEvent.AmountChanged(it))
+                },
+                onCommentChange = {
+                    bottomViewModel.onEvent(AddExpenseUiEvent.CommentsChanged(it))
+                },
+                onServiceTypeChange = {
+                    bottomViewModel.onEvent(AddExpenseUiEvent.ServiceTypeChanged(it))
+                },
+                onAddExpenseClick = {
+                    bottomViewModel.onEvent(AddExpenseUiEvent.AddExpenseClick)
+                },
+                onMonthClick = {
+                    dateDialogState.show()
+                },
+            )
+
+            MaterialDialog (
+                dialogState = dateDialogState,
+                buttons = {
+                    positiveButton(text = "Ok", textStyle = MaterialTheme.typography.h5.copy(color = MaterialTheme.colors.onBackground))
+                    negativeButton(text = "Cancel", textStyle = MaterialTheme.typography.h5.copy(color = MaterialTheme.colors.onBackground))
+                }
             ) {
-                ExpensesSheetContent(
-                    amount = bottomViewModel.uiState.amount,
-                    comments = bottomViewModel.uiState.comments,
-                    serviceType = bottomViewModel.uiState.serviceType,
-                    onAmountChange = {
-                        bottomViewModel.onEvent(AddExpenseUiEvent.AmountChanged(it))
-                    },
-                    onCommentChange = {
-                        bottomViewModel.onEvent(AddExpenseUiEvent.CommentsChanged(it))
-                    },
-                    onServiceTypeChange = {
-                        bottomViewModel.onEvent(AddExpenseUiEvent.ServiceTypeChanged(it))
-                    },
-                    onAddExpenseClick = {
-                        bottomViewModel.onEvent(AddExpenseUiEvent.AddExpenseClick)
+                datepicker(
+                    initialDate = LocalDate.now(),
+                    title = "Pick a date",
+                    onDateChange = {
+                        bottomViewModel.onEvent(AddExpenseUiEvent.DateChanged(LocalDateTime.of(it, LocalTime.NOON)))
                     }
                 )
             }

@@ -2,6 +2,7 @@ package com.esaudev.househealth.ui.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -41,7 +42,9 @@ fun OutlinedTextFieldWithValidation(
     keyboardOptions: KeyboardOptions = KeyboardOptions(
         capitalization = KeyboardCapitalization.Sentences
     ),
-    visualTransformation: VisualTransformation = VisualTransformation.None
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
 ) {
     Column(
         modifier = modifier,
@@ -49,7 +52,8 @@ fun OutlinedTextFieldWithValidation(
         verticalArrangement = Arrangement.Center
     ) {
         OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth(),
             value = value,
             onValueChange = onValueChange,
             label = {
@@ -70,12 +74,14 @@ fun OutlinedTextFieldWithValidation(
                 cursorColor = MaterialTheme.colors.onBackground,
                 focusedBorderColor = MaterialTheme.colors.onBackground,
                 focusedLabelColor = MaterialTheme.colors.onBackground
-            )
+            ),
+            leadingIcon = leadingIcon,
+            trailingIcon = trailingIcon
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
-
         AnimatedVisibility(visible = isError) {
+            Spacer(modifier = Modifier.height(8.dp))
+
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = errorMessage,
@@ -97,7 +103,7 @@ fun OutlinedTextFieldWithValidationPreview() {
                 errorMessage = "Error message",
                 onValueChange = {},
                 label = "Label",
-                keyboardActions = KeyboardActions { }
+                keyboardActions = KeyboardActions { },
             )
         }
     }

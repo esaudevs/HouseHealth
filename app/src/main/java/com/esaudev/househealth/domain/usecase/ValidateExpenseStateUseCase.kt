@@ -20,7 +20,7 @@ class ValidateExpenseStateUseCase @Inject constructor() {
                 amount = uiState.amount.toDouble(),
                 serviceType = uiState.serviceType,
                 comments = uiState.comments,
-                date = LocalDateTime.now(),
+                date = uiState.date,
                 houseId = uiState.houseId
             )
         )

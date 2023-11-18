@@ -17,6 +17,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 @HiltViewModel
 class AddExpenseModalViewModel @Inject constructor(
@@ -62,11 +63,15 @@ class AddExpenseModalViewModel @Inject constructor(
                 is AddExpenseUiEvent.ServiceTypeChanged -> {
                     uiState = uiState.copy(serviceType = addExpenseUiEvent.serviceType)
                 }
+                is AddExpenseUiEvent.DateChanged -> {
+                    uiState = uiState.copy(date = addExpenseUiEvent.date)
+                }
                 AddExpenseUiEvent.SheetDismissed -> {
                     uiState = uiState.copy(
                         amount = "",
                         comments = "",
-                        serviceType = null
+                        serviceType = null,
+                        date = LocalDateTime.now()
                     )
                 }
             }
@@ -77,6 +82,7 @@ class AddExpenseModalViewModel @Inject constructor(
 data class AddExpenseUiState(
     val amount: String = "",
     val comments: String = "",
+    val date: LocalDateTime = LocalDateTime.now(),
     val serviceType: ServiceType? = null,
     val isLoading: Boolean = false,
     val houseId: String? = null
@@ -85,6 +91,7 @@ data class AddExpenseUiState(
 sealed class AddExpenseUiEvent {
     data class AmountChanged(val amount: String) : AddExpenseUiEvent()
     data class CommentsChanged(val comments: String) : AddExpenseUiEvent()
+    data class DateChanged(val date: LocalDateTime): AddExpenseUiEvent()
     data object AddExpenseClick : AddExpenseUiEvent()
     data class ServiceTypeChanged(val serviceType: ServiceType) : AddExpenseUiEvent()
     data object SheetDismissed : AddExpenseUiEvent()
