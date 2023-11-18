@@ -307,7 +307,6 @@ fun ExpensesEmpty(
                     onClick = { },
                     isSelected = false
                 )
-
             }
             EmptyPage(
                 modifier = Modifier
