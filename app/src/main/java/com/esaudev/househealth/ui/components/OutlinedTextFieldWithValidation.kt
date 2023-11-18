@@ -2,7 +2,6 @@ package com.esaudev.househealth.ui.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -44,7 +43,7 @@ fun OutlinedTextFieldWithValidation(
     ),
     visualTransformation: VisualTransformation = VisualTransformation.None,
     leadingIcon: @Composable (() -> Unit)? = null,
-    trailingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null
 ) {
     Column(
         modifier = modifier,
@@ -103,7 +102,7 @@ fun OutlinedTextFieldWithValidationPreview() {
                 errorMessage = "Error message",
                 onValueChange = {},
                 label = "Label",
-                keyboardActions = KeyboardActions { },
+                keyboardActions = KeyboardActions { }
             )
         }
     }

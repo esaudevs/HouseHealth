@@ -13,11 +13,11 @@ import com.esaudev.househealth.ext.isNumeric
 import com.esaudev.househealth.ui.screens.expenses.navigation.houseIdArg
 import com.esaudev.househealth.ui.util.UiTopLevelEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.LocalDateTime
 import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 
 @HiltViewModel
 class AddExpenseModalViewModel @Inject constructor(
@@ -91,7 +91,7 @@ data class AddExpenseUiState(
 sealed class AddExpenseUiEvent {
     data class AmountChanged(val amount: String) : AddExpenseUiEvent()
     data class CommentsChanged(val comments: String) : AddExpenseUiEvent()
-    data class DateChanged(val date: LocalDateTime): AddExpenseUiEvent()
+    data class DateChanged(val date: LocalDateTime) : AddExpenseUiEvent()
     data object AddExpenseClick : AddExpenseUiEvent()
     data class ServiceTypeChanged(val serviceType: ServiceType) : AddExpenseUiEvent()
     data object SheetDismissed : AddExpenseUiEvent()

@@ -35,7 +35,7 @@ fun MonthCard(
         shape = RoundedCornerShape(50),
         border = BorderStroke(
             width = 1.dp,
-            color =  MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.disabled)
+            color = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.disabled)
         ),
         backgroundColor = Color.Transparent,
         onClick = onClick,

@@ -2,7 +2,6 @@ package com.esaudev.househealth.domain.usecase
 
 import com.esaudev.househealth.domain.model.Expense
 import com.esaudev.househealth.ui.sheets.expenses.AddExpenseUiState
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 class ValidateExpenseStateUseCase @Inject constructor() {

@@ -39,7 +39,8 @@ fun MonthSelector(
         }
 
         AnimatedContent(
-            targetState = date, label = ""
+            targetState = date,
+            label = ""
         ) { targetState ->
             Text(
                 text = targetState.getMonthNameWithYear(),

@@ -53,13 +53,12 @@ import com.esaudev.househealth.ui.sheets.expenses.AddExpenseUiEvent
 import com.esaudev.househealth.ui.theme.SolidWhite
 import com.esaudev.househealth.ui.util.UiTopLevelEvent
 import com.vanpra.composematerialdialogs.MaterialDialog
-import com.vanpra.composematerialdialogs.datetime.date.DatePickerDefaults
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import kotlinx.coroutines.launch
 
 @Composable
 fun ExpensesRoute(
@@ -145,10 +144,10 @@ fun ExpensesScreen(
                 },
                 onMonthClick = {
                     dateDialogState.show()
-                },
+                }
             )
 
-            MaterialDialog (
+            MaterialDialog(
                 dialogState = dateDialogState,
                 buttons = {
                     positiveButton(text = "Ok", textStyle = MaterialTheme.typography.h5.copy(color = MaterialTheme.colors.onBackground))
