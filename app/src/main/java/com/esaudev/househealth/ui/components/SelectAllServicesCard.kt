@@ -29,7 +29,7 @@ fun SelectAllServicesCard(
     enabled: Boolean = true
 ) {
     val containerAnimatedColor = animateColorAsState(
-        targetValue = when{
+        targetValue = when {
             isSelected && enabled -> MaterialTheme.colors.primary
             isSelected && !enabled -> Color.Gray.copy(alpha = 0.5f)
             !isSelected && enabled -> MaterialTheme.colors.surface

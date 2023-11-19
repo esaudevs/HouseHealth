@@ -42,7 +42,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.esaudev.househealth.R
 import com.esaudev.househealth.domain.model.ServiceType
-import com.esaudev.househealth.domain.model.getContent
 import com.esaudev.househealth.ui.components.EmptyPage
 import com.esaudev.househealth.ui.components.ExpenseCard
 import com.esaudev.househealth.ui.components.LoadingPage
@@ -213,7 +212,7 @@ fun ExpensesWrapper(
     onAddExpenseClick: () -> Unit,
     onExpenseClick: () -> Unit,
     onServiceClick: (ServiceType) -> Unit,
-    onAllServicesClick: () -> Unit,
+    onAllServicesClick: () -> Unit
 ) {
     Scaffold(
         modifier = modifier,

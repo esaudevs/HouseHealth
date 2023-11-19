@@ -1,7 +1,6 @@
 package com.esaudev.househealth.ui.components
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,14 +16,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.esaudev.househealth.domain.model.ServiceType
-import com.esaudev.househealth.domain.model.ServiceTypeContent
 import com.esaudev.househealth.domain.model.getContent
 import com.esaudev.househealth.ui.theme.LightGray
 
@@ -36,9 +33,8 @@ fun ServiceCard(
     onClick: (ServiceType) -> Unit,
     enabled: Boolean = true
 ) {
-
     val containerAnimatedColor = animateColorAsState(
-        targetValue = when{
+        targetValue = when {
             isSelected && enabled -> MaterialTheme.colors.primary
             isSelected && !enabled -> LightGray.copy(alpha = 0.4f)
             !isSelected && enabled -> MaterialTheme.colors.surface
@@ -50,7 +46,7 @@ fun ServiceCard(
     )
 
     val contentAnimatedColor = animateColorAsState(
-        targetValue = when{
+        targetValue = when {
             isSelected && enabled -> MaterialTheme.colors.onPrimary
             isSelected && !enabled -> MaterialTheme.colors.onSurface.copy(
                 alpha = 0.4f
@@ -119,7 +115,7 @@ private fun ServiceCardPreview(
             serviceType = providerPair.first,
             isSelected = providerPair.second,
             onClick = {},
-            enabled = false,
+            enabled = false
         )
     }
 }
