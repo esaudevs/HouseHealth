@@ -12,6 +12,7 @@ import java.time.LocalDateTime
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -32,16 +33,16 @@ class ExpensesViewModel @Inject constructor(
 
     fun getExpensesByQuery() {
         viewModelScope.launch {
-            queryState.collect {
-                val expenses = expensesRepository.observeAllByQuery(
+            queryState.collectLatest {
+                expensesRepository.observeAllByQuery(
                     houseId = savedStateHandle.get<String>(houseIdArg).orEmpty(),
                     query = it
-                ).first()
-
-                if (expenses.isEmpty()) {
-                    _uiState.value = ExpensesUiState.HouseWithExpenses(expenses = expenses)
-                } else {
-                    _uiState.value = ExpensesUiState.HouseWithExpenses(expenses = expenses)
+                ).collectLatest { expenses ->
+                    if (expenses.isEmpty()) {
+                        _uiState.value = ExpensesUiState.HouseWithExpenses(expenses = expenses)
+                    } else {
+                        _uiState.value = ExpensesUiState.HouseWithExpenses(expenses = expenses)
+                    }
                 }
             }
         }
