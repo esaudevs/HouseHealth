@@ -14,6 +14,10 @@ data class ServiceTypeContent(
     val iconDesc: UiText
 )
 
+fun List<ServiceType>.hasAllServices(): Boolean{
+    return this.containsAll(ServiceType.values().toList())
+}
+
 fun ServiceType.getContent(): ServiceTypeContent {
     return when (this) {
         ServiceType.Light -> ServiceTypeContent(

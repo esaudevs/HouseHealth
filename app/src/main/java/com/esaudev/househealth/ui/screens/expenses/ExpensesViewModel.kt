@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.esaudev.househealth.domain.model.Expense
+import com.esaudev.househealth.domain.model.ServiceType
 import com.esaudev.househealth.domain.repository.ExpensesRepository
 import com.esaudev.househealth.ui.screens.expenses.navigation.houseIdArg
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,9 +33,9 @@ class ExpensesViewModel @Inject constructor(
     fun getExpensesByQuery() {
         viewModelScope.launch {
             queryState.collect {
-                val expenses = expensesRepository.observeAllByHouseMonth(
+                val expenses = expensesRepository.observeAllByQuery(
                     houseId = savedStateHandle.get<String>(houseIdArg).orEmpty(),
-                    date = it.date
+                    query = it
                 ).first()
 
                 if (expenses.isEmpty()) {
@@ -65,10 +66,40 @@ class ExpensesViewModel @Inject constructor(
             }
         }
     }
+
+    fun onServiceClick(serviceType: ServiceType) {
+        viewModelScope.launch {
+            _queryState.update {
+                val updatedList = it.serviceTypes.map { it }.toMutableList()
+
+                if (it.serviceTypes.contains(serviceType)) {
+                    updatedList.remove(serviceType)
+                } else {
+                    updatedList.add(serviceType)
+                }
+
+                it.copy(
+                    serviceTypes = updatedList
+                )
+            }
+        }
+    }
+
+    fun onAllServiceClick() {
+        viewModelScope.launch {
+            _queryState.update {
+                it.copy(
+                    allServicesLocked = !it.allServicesLocked
+                )
+            }
+        }
+    }
 }
 
 data class ExpensesQueryState(
-    val date: LocalDateTime = LocalDateTime.now()
+    val date: LocalDateTime = LocalDateTime.now(),
+    val serviceTypes: List<ServiceType> = ServiceType.values().toList(),
+    val allServicesLocked: Boolean = true
 )
 
 sealed interface ExpensesUiState {

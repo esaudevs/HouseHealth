@@ -13,6 +13,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -28,13 +29,21 @@ fun SelectAllServicesCard(
     enabled: Boolean = true
 ) {
     val containerAnimatedColor = animateColorAsState(
-        targetValue = if (isSelected) MaterialTheme.colors.primary else MaterialTheme.colors.secondary,
+        targetValue = when{
+            isSelected && enabled -> MaterialTheme.colors.primary
+            isSelected && !enabled -> Color.Gray.copy(alpha = 0.5f)
+            !isSelected && enabled -> MaterialTheme.colors.surface
+            else -> {
+                Color.Gray.copy(alpha = 0.5f)
+            }
+        },
         label = "containerColor"
     )
     val contentAnimatedColor = animateColorAsState(
-        targetValue = if (isSelected) MaterialTheme.colors.onPrimary else MaterialTheme.colors.onSecondary,
+        targetValue = if (isSelected) MaterialTheme.colors.onPrimary else MaterialTheme.colors.onSurface,
         label = "contentColor"
     )
+
     Card(
         modifier = Modifier
             .size(
@@ -43,7 +52,9 @@ fun SelectAllServicesCard(
             ),
         onClick = onClick,
         enabled = enabled,
-        shape = RoundedCornerShape(40)
+        shape = RoundedCornerShape(40),
+        backgroundColor = containerAnimatedColor.value,
+        contentColor = contentAnimatedColor.value
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -74,7 +85,8 @@ private fun SelectAllServicesCardPreview(
     SurfaceThemed {
         SelectAllServicesCard(
             onClick = {},
-            isSelected = isSelected
+            isSelected = isSelected,
+            enabled = false
         )
     }
 }

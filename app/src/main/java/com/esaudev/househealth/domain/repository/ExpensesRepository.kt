@@ -1,6 +1,7 @@
 package com.esaudev.househealth.domain.repository
 
 import com.esaudev.househealth.domain.model.Expense
+import com.esaudev.househealth.ui.screens.expenses.ExpensesQueryState
 import java.time.LocalDateTime
 import kotlinx.coroutines.flow.Flow
 
@@ -12,8 +13,8 @@ interface ExpensesRepository {
 
     suspend fun deleteById(expenseId: String)
 
-    fun observeAllByHouseMonth(
+    fun observeAllByQuery(
         houseId: String,
-        date: LocalDateTime
+        query: ExpensesQueryState
     ): Flow<List<Expense>>
 }

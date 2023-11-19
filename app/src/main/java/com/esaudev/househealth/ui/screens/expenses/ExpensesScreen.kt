@@ -79,7 +79,9 @@ fun ExpensesRoute(
         queryState = queryState,
         bottomViewModel = bottomViewModel,
         onNextMonthClick = viewModel::onNextMonth,
-        onPreviousMonthClick = viewModel::onPreviousMonth
+        onPreviousMonthClick = viewModel::onPreviousMonth,
+        onServiceClick = viewModel::onServiceClick,
+        onAllServicesClick = viewModel::onAllServiceClick
     )
 }
 
@@ -90,7 +92,9 @@ fun ExpensesScreen(
     queryState: ExpensesQueryState,
     bottomViewModel: AddExpenseModalViewModel,
     onNextMonthClick: () -> Unit,
-    onPreviousMonthClick: () -> Unit
+    onPreviousMonthClick: () -> Unit,
+    onServiceClick: (ServiceType) -> Unit,
+    onAllServicesClick: () -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
@@ -182,7 +186,9 @@ fun ExpensesScreen(
                             }
                         },
                         onNextMonthClick = onNextMonthClick,
-                        onPreviousMonthClick = onPreviousMonthClick
+                        onPreviousMonthClick = onPreviousMonthClick,
+                        onServiceClick = onServiceClick,
+                        onAllServicesClick = onAllServicesClick
                     )
                 }
 
@@ -198,78 +204,6 @@ fun ExpensesScreen(
 }
 
 @Composable
-fun ExpensesContent(
-    uiState: ExpensesUiState.HouseWithExpenses,
-    queryState: ExpensesQueryState,
-    modifier: Modifier = Modifier,
-    onNextMonthClick: () -> Unit,
-    onPreviousMonthClick: () -> Unit,
-    onAddExpenseClick: () -> Unit,
-    onExpenseClick: () -> Unit
-) {
-    Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = onAddExpenseClick,
-                backgroundColor = MaterialTheme.colors.primary,
-                contentColor = MaterialTheme.colors.onPrimary
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Add,
-                    contentDescription = stringResource(
-                        id = R.string.open_add_expense_bottom_sheet_content_desc
-                    )
-                )
-            }
-        }
-    ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .padding(paddingValues = paddingValues),
-            contentPadding = PaddingValues(all = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            item {
-                Column {
-                    MonthSelector(
-                        modifier = Modifier.fillMaxWidth(),
-                        date = queryState.date,
-                        onPreviousMonthClick = onPreviousMonthClick,
-                        onNextMonthClick = onNextMonthClick
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text(
-                        text = stringResource(id = R.string.services_filter),
-                        style = MaterialTheme.typography.h4
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        ServiceType.values().onEach {
-                            ServiceCard(serviceTypeContent = it.getContent(), onClick = {})
-                        }
-                        SelectAllServicesCard(
-                            onClick = { },
-                            isSelected = false
-                        )
-                    }
-                }
-            }
-
-            items(uiState.expenses, key = { it.id }) {
-                ExpenseCard(amount = it.amount, serviceType = it.serviceType)
-            }
-
-            item {
-                Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
-            }
-        }
-    }
-}
-
-@Composable
 fun ExpensesWrapper(
     modifier: Modifier = Modifier,
     uiState: ExpensesUiState.HouseWithExpenses,
@@ -277,7 +211,9 @@ fun ExpensesWrapper(
     onNextMonthClick: () -> Unit,
     onPreviousMonthClick: () -> Unit,
     onAddExpenseClick: () -> Unit,
-    onExpenseClick: () -> Unit
+    onExpenseClick: () -> Unit,
+    onServiceClick: (ServiceType) -> Unit,
+    onAllServicesClick: () -> Unit,
 ) {
     Scaffold(
         modifier = modifier,
@@ -305,10 +241,10 @@ fun ExpensesWrapper(
             ExpensesHeader(
                 queryState = queryState,
                 onNextMonthClick = onNextMonthClick,
-                onPreviousMonthClick = onPreviousMonthClick
+                onPreviousMonthClick = onPreviousMonthClick,
+                onAllServicesClick = onAllServicesClick,
+                onServiceClick = onServiceClick
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
 
             AnimatedContent(targetState = uiState.expenses, label = "") { targetState ->
                 if (targetState.isEmpty()) {
@@ -331,7 +267,9 @@ fun ExpensesHeader(
     modifier: Modifier = Modifier,
     queryState: ExpensesQueryState,
     onNextMonthClick: () -> Unit,
-    onPreviousMonthClick: () -> Unit
+    onPreviousMonthClick: () -> Unit,
+    onAllServicesClick: () -> Unit,
+    onServiceClick: (ServiceType) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -353,11 +291,16 @@ fun ExpensesHeader(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             ServiceType.values().onEach {
-                ServiceCard(serviceTypeContent = it.getContent(), onClick = {})
+                ServiceCard(
+                    serviceType = it,
+                    onClick = onServiceClick,
+                    isSelected = queryState.serviceTypes.contains(it),
+                    enabled = !queryState.allServicesLocked
+                )
             }
             SelectAllServicesCard(
-                onClick = { },
-                isSelected = false
+                onClick = onAllServicesClick,
+                isSelected = queryState.allServicesLocked
             )
         }
     }
@@ -386,6 +329,10 @@ fun ExpensesWithContent(
             .padding(paddingValues = paddingValues),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
         items(uiState.expenses, key = { it.id }) {
             ExpenseCard(amount = it.amount, serviceType = it.serviceType)
         }

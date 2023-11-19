@@ -4,7 +4,9 @@ import com.esaudev.househealth.database.dao.ExpenseDao
 import com.esaudev.househealth.database.model.toExpense
 import com.esaudev.househealth.di.DefaultDispatcher
 import com.esaudev.househealth.domain.model.Expense
+import com.esaudev.househealth.domain.model.ServiceType
 import com.esaudev.househealth.domain.model.toEntity
+import com.esaudev.househealth.ui.screens.expenses.ExpensesQueryState
 import java.time.LocalDateTime
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -37,11 +39,15 @@ class ExpensesRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun observeAllByHouseMonth(
+    override fun observeAllByQuery(
         houseId: String,
-        date: LocalDateTime
+        query: ExpensesQueryState
     ): Flow<List<Expense>> {
-        return expenseDao.observeAllByHouseMonth(houseId = houseId, date.monthValue.toString()).map {
+        return expenseDao.observeAllByHouseMonth(
+            houseId = houseId,
+            monthValue = query.date.monthValue.toString(),
+            serviceTypes = if (query.allServicesLocked) ServiceType.values().toList() else query.serviceTypes
+        ).map {
             withContext(dispatcher) {
                 it.map { it.toExpense() }
             }
