@@ -20,8 +20,7 @@ import java.time.LocalDateTime
 )
 data class ExpenseEntity(
     @PrimaryKey
-    val id: String,
-    val amount: Double,
+    val id: String, val amount: Double,
     val houseId: String,
     val serviceType: ServiceType,
     val comments: String,
